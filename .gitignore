@@ -1,0 +1,39 @@
+# 虚拟环境
+fitness/
+venv/
+.venv/
+.env/
+
+# 姿态估计库
+openpose/
+OpenPose/
+openpose-master/
+
+# 数据集、权重、模型
+*.pt
+*.pth
+*.onnx
+*.pb
+*.caffemodel
+*.bin
+*.dat
+dataset/
+data/
+models/
+
+# 编辑器配置
+.idea/
+.vscode/
+*.iml
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.tmp
