@@ -41,14 +41,16 @@ def analyze(data: ImageData):
         # 1. 姿态检测与骨架绘制
         image_with_skeleton, landmarks = detect_pose(frame)
 
-        # 2. 动作分析
-        feedback, angle = analyze_squat(landmarks)
+        # 2. 动作分析 (现在返回三个值：反馈、角度、计数)
+        feedback, angle, counter = analyze_squat(landmarks)
 
-        # 在图像上显示反馈
+        # 在图像上显示反馈、角度和计数
         cv2.putText(image_with_skeleton, f"Knee Angle: {int(angle)}", (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         cv2.putText(image_with_skeleton, f"Feedback: {feedback}", (10, 70),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(image_with_skeleton, f"Count: {counter}", (10, 110),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
         # 编码返回
         _, buffer = cv2.imencode('.jpg', image_with_skeleton)
@@ -57,7 +59,8 @@ def analyze(data: ImageData):
         return {
             "processed_image": "data:image/jpeg;base64," + encoded_image,
             "feedback": feedback,
-            "angle": angle
+            "angle": angle,
+            "counter": counter
         }
     except Exception as e:
         print(f"Error during analysis: {e}")

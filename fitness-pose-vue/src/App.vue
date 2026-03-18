@@ -15,8 +15,9 @@
 
     <div id="feedback-container">
       <h3>Real-time Feedback</h3>
-      <p>{{ feedback }}</p>
-      <p>Knee Angle: <span>{{ angle }}</span></p>
+      <div class="counter-badge">Count: {{ counter }}</div>
+      <p class="feedback-text">{{ feedback }}</p>
+      <p>Knee Angle: <span class="angle-value">{{ angle }}°</span></p>
     </div>
   </div>
 </template>
@@ -31,6 +32,7 @@ const video = ref(null);
 const processedImage = ref('');
 const feedback = ref('-');
 const angle = ref('-');
+const counter = ref(0);
 
 let intervalId = null;
 let isProcessing = false; // 请求锁
@@ -74,6 +76,7 @@ const captureAndAnalyze = () => {
     processedImage.value = data.processed_image;
     feedback.value = data.feedback;
     angle.value = Math.round(data.angle);
+    counter.value = data.counter;
   })
   .catch((error) => {
     console.error("Fetch Error:", error);
@@ -134,16 +137,40 @@ body {
 
 #feedback-container {
   margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 12px;
   background-color: #fff;
-  min-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 320px;
   text-align: center;
 }
 
-video, img {
+.counter-badge {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ff4757;
+  margin: 10px 0;
+  padding: 10px;
+  background: #fff5f5;
   border-radius: 8px;
+  border: 2px solid #ff4757;
+}
+
+.feedback-text {
+  font-size: 1.2rem;
+  color: #2f3542;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+.angle-value {
+  color: #3742fa;
+  font-weight: bold;
+}
+
+video, img {
+  border-radius: 12px;
   background-color: #000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 </style>
