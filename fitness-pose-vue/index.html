@@ -1,50 +1,13 @@
-<!DOCTYPE html>
-<html>
-<body>
-
-<h2>Fitness Pose Detection</h2>
-
-<video id="video" width="640" height="480" autoplay></video>
-
-<script>
-const video = document.getElementById("video");
-
-navigator.mediaDevices.getUserMedia({video:true})
-.then(stream=>{
-    video.srcObject = stream;
-});
-const canvas = document.createElement("canvas");
-
-setInterval(()=>{
-    console.log("sending video frame");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    canvas.getContext("2d")
-          .drawImage(video,0,0);
-
-    const image = canvas.toDataURL("image/jpeg");
-
-    // 修改这里，使后端 API 地址更灵活
-    const BACKEND_URL = "http://localhost:8000/analyze";
-
-    fetch(BACKEND_URL,{
-        method:"POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body:JSON.stringify({image:image})
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Success:", data);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
-
-},1000);
-</script>
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fitness-pose-vue</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>

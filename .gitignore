@@ -1,5 +1,4 @@
 # 虚拟环境
-fitness/
 venv/
 .venv/
 .env/
@@ -22,6 +21,7 @@ data/
 models/
 
 # 编辑器配置
+node_modules/
 .idea/
 .vscode/
 *.iml

@@ -1,5 +1,8 @@
+# Versions available on your system: 0.10.32, 0.10.31, 0.10.30
 fastapi
 uvicorn
+pydantic
 opencv-python
 numpy
+mediapipe==0.10.32
 python-multipart
