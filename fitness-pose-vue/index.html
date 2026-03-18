@@ -16,6 +16,7 @@ navigator.mediaDevices.getUserMedia({video:true})
 const canvas = document.createElement("canvas");
 
 setInterval(()=>{
+    console.log("sending video frame");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
@@ -24,9 +25,22 @@ setInterval(()=>{
 
     const image = canvas.toDataURL("image/jpeg");
 
-    fetch("http://localhost:8000/analyze",{
+    // 修改这里，使后端 API 地址更灵活
+    const BACKEND_URL = "http://localhost:8000/analyze";
+
+    fetch(BACKEND_URL,{
         method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
         body:JSON.stringify({image:image})
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Success:", data);
+    })
+    .catch((error) => {
+        console.error("Error:", error);
     });
 
 },1000);
