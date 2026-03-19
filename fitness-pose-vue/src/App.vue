@@ -14,16 +14,24 @@
     </div>
 
     <div id="feedback-container">
-      <h3>Real-time Feedback</h3>
-      <div class="counter-badge">Count: {{ counter }}</div>
+      <div class="exercise-selector">
+        <label for="exercise-select">选择运动项目: </label>
+        <select id="exercise-select" v-model="exerciseType">
+          <option value="squat">深蹲</option>
+          <option value="pushup">俯卧撑</option>
+          <option value="jumping_jack">开合跳</option>
+        </select>
+      </div>
+      <h3>实时反馈</h3>
+      <div class="counter-badge">计数: {{ counter }}</div>
       <p class="feedback-text">{{ feedback }}</p>
-      <p>Knee Angle: <span class="angle-value">{{ angle }}°</span></p>
+      <p>{{ angleLabel }}: <span class="angle-value">{{ angle }}°</span></p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 // Refs for DOM elements
 const video = ref(null);
@@ -33,6 +41,15 @@ const processedImage = ref('');
 const feedback = ref('-');
 const angle = ref('-');
 const counter = ref(0);
+const exerciseType = ref('squat');
+
+const angleLabel = computed(() => {
+  switch (exerciseType.value) {
+    case 'pushup': return '肘部角度';
+    case 'jumping_jack': return '手臂角度';
+    default: return '膝关节角度';
+  }
+});
 
 let intervalId = null;
 let isProcessing = false; // 请求锁
@@ -64,7 +81,10 @@ const captureAndAnalyze = () => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ image: image })
+    body: JSON.stringify({ 
+      image: image,
+      exercise_type: exerciseType.value
+    })
   })
   .then(response => response.json())
   .then(data => {
@@ -143,6 +163,24 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   min-width: 320px;
   text-align: center;
+}
+
+.exercise-selector {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.exercise-selector select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  outline: none;
+}
+
+.exercise-selector select:focus {
+  border-color: #42b983;
 }
 
 .counter-badge {
